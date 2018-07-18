@@ -1,0 +1,21 @@
+<html>
+<head>
+    <title>callback</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content= "<%=clientID%>">
+
+
+
+</head>
+
+<h1> Reached callback></h1>
+
+<div class="g-signin2" data-onsuccess="onSignIn">as</div>
+<button onclick="onClickLogin()">Login with google</button>
+<script>
+    function onClickLogin(){
+        window.location.href = '/auth/google';
+
+    }
+</script>
+</html>
