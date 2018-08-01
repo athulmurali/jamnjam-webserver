@@ -1,6 +1,6 @@
 
 const keys = require('./config/keys')
-
+console.log(process.env.JWT_KEY)
 
 
 const mongoose = require('mongoose')
@@ -61,7 +61,7 @@ var usersRouter   =   require('./routes/users');
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-app.use('/user/', userRoleRouter);
+app.use('/user/:userRole', userRoleRouter);
 
 app.use('/users', usersRouter);
 
