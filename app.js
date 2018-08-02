@@ -1,5 +1,4 @@
-
-console.log(process.env.JWT_KEY)
+const  cors = require('cors');
 
 const mongoose = require('mongoose')
 
@@ -7,6 +6,7 @@ const mongoose = require('mongoose')
 var express = require('express');
 
 var app = express();
+app.use(cors())
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
