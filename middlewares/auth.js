@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require('../models/user')
+const User = require('../models/User')
 const REQ_TOKEN_NAME = require("../const/jwt").REQ_TOKEN_NAME;
 
 module.exports={
