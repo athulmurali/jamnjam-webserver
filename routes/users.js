@@ -33,5 +33,24 @@ router.get('/', function(req, res, next) {
 
 
 
+router.get('/:userRole', function (req,res) {
+    try{
+        console.log("hahaha")
+        const userRole = req.params.userRole;
+        const userModel = switchSchemaByRole(userRole);
+        userModel.find({}).then(users=>{res.send(users);}).catch(err=>{
+            console.log(err);
+        })
+    }
+    catch(err){
+        console.error(err)
+        res.status(403).send({error : "Invalid role"});
+        next(error)
+    }
+
+});
+
+
+
 
 module.exports = router;
