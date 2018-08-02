@@ -1,13 +1,13 @@
 
 console.log(process.env.JWT_KEY)
 
-
 const mongoose = require('mongoose')
 
 
 var express = require('express');
 
 var app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -37,7 +37,6 @@ var logger = require('morgan')
 mongoose.connect(
     process.env.MONGO_URL
     ,{ useNewUrlParser: true }).then(result=>{
-    console.log(result);
     console.log("mongoose connect success !")
 }).catch(error=>{
     console.log("error in mongoose connection")

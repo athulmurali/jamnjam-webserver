@@ -16,7 +16,7 @@ module.exports ={
 
         case roles.BAND :return bandSchema
 
-        default : return artistSchema;
+        default : throw new Error("invalid role")
     }
 
 }

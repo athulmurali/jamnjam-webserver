@@ -11,8 +11,6 @@ const validateToken = require("../middlewares/auth").validateToken;
 
 router.post('/',   function (req,res,next) {
 
-
-
     const user = req.body;
 
     const userSchema = userUtils.switchSchemaByRole(user.role)
@@ -26,7 +24,7 @@ router.post('/',   function (req,res,next) {
         console.log(newUser)
         // res.send(newUser);
 
-        var token = jwt.sign({ id: newUser._id }, keys.jwt.secret, {
+        var token = jwt.sign({ id: newUser._id }, process.env.JWT_KEY, {
             expiresIn: 24*60*60*1000 // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token });
@@ -56,25 +54,6 @@ router.delete('/:_id', function (req,res) {
     }
 
 });
-
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
-//
-// router.get('/profile', validateToken,(req,res,next) => {
-//
-//
-//     console.log("Current path:  "  + req.originalUrl)
-//     console.log("decoded : ",   req.decoded)
-//     res.send(req.user)
-//
-// })
-
-// router.use('/user', userRole)
-
-
 
 
 module.exports = router;
