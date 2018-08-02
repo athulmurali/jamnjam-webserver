@@ -1,5 +1,4 @@
 
-const keys = require('./config/keys')
 console.log(process.env.JWT_KEY)
 
 
@@ -35,8 +34,14 @@ var logger = require('morgan')
 // app.use(passport.initialize())
 
 
-mongoose.connect(keys.mongo.url,{ useNewUrlParser: true } ,()=>{
-  console.log("mongoose : connect success")
+mongoose.connect(
+    process.env.MONGO_URL
+    ,{ useNewUrlParser: true }).then(result=>{
+    console.log(result);
+    console.log("mongoose connect success !")
+}).catch(error=>{
+    console.log("error in mongoose connection")
+    console.error(error);
 })
 
 //
@@ -61,9 +66,10 @@ var usersRouter   =   require('./routes/users');
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
+app.use('/users/', usersRouter);
+
 app.use('/user/:userRole', userRoleRouter);
 
-app.use('/users', usersRouter);
 
 app.use('/auth', authRouter);
 

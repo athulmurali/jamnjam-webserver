@@ -6,6 +6,7 @@ const roles = require("../const/role");
 const artistSchema  = require('../models/Artist');
 const bandSchema    = require('../models/Band');
 const adminSchema   = require('../models/Admin')
+const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 // router.get('/', function(req, res, next) {
 //   res.send('respond with a resource');
 // });
@@ -29,5 +30,8 @@ router.get('/', function(req, res, next) {
 
     })
 });
+
+
+
 
 module.exports = router;

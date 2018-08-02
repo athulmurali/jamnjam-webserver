@@ -21,21 +21,7 @@ router.get('/', function (req,res) {
 });
 
 
-router.delete('/:_id', function (req,res) {
-    try{
-        const userRole = req.params._id;
-        const userModel = switchSchemaByRole(userRole);
-        userModel.remove({}).then(removedUser=>{
-            res.send(removedUser);
-        })
-    }
-    catch(err){
-        console.error(err)
-        res.status(403).send(error);
-        next(error)
-    }
 
-});
 
 
 
