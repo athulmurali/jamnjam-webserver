@@ -1,4 +1,5 @@
 var express = require('express');
+const userUtils = require("../../middlewares/user");
 var router = express.Router({mergeParams: true});
 
 const switchSchemaByRole = require("../../middlewares/user").switchSchemaByRole;
@@ -30,6 +31,45 @@ router.delete('/:_id', function (req,res, next) {
     }
 
 });
+
+
+router.get('/isUserNameAvailable/:username',function (req,res) {
+
+    console.log("username check: " + req.params.username)
+
+    const userSchema = userUtils.switchSchemaByRole(req.params.userRole)
+
+    userSchema.findOne({username: req.params.username}).then(user=>{
+        if(user){
+            return res.status(409).send({error : "Already taken!"})
+
+        }
+        else{
+            return res.send({message : "available"})
+        }
+    })
+
+})
+
+
+
+router.get('/isEmailAvailable/:email',function (req,res) {
+
+    console.log("email check: " + req.params.email)
+
+    const userSchema = userUtils.switchSchemaByRole(req.params.userRole)
+
+    userSchema.findOne({emailId: req.params.email}).then(user=>{
+        if(user){
+            return res.status(409).send({error : "Already taken!"})
+
+        }
+        else{
+            return res.send({message : "available"})
+        }
+    })
+
+})
 
 module.exports = router;
 

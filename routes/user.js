@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 
 const userUtils = require('../middlewares/user')
 const jwt = require("jsonwebtoken");
@@ -54,6 +54,7 @@ router.delete('/:_id', function (req,res) {
     }
 
 });
+
 
 
 module.exports = router;
