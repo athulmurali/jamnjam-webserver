@@ -62,6 +62,8 @@ var userRoleRouter   =   require('./routes/user/');
 
 var usersRouter   =   require('./routes/users');
 
+const artistLookOutRouter = require('./routes/artistLookOut')
+
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
@@ -71,6 +73,8 @@ app.use('/user/:userRole', userRoleRouter);
 
 
 app.use('/auth', authRouter);
+app.use('/artistLookOut', artistLookOutRouter);
+
 
 
 // catch 404 and forward to error handler
