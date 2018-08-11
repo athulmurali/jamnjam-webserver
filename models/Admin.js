@@ -6,6 +6,16 @@ const models     = require('../const/models')
 
 
 var adminSchema = UserSchema({
+
+    firstName : {
+        type : String,
+    },
+
+
+    lastName : {
+        type : String,
+    },
+
     isAdmin : {
         type: Boolean,
         default: true

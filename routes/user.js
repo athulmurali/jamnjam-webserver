@@ -4,9 +4,10 @@ var router = express.Router({mergeParams: true});
 const userUtils = require('../middlewares/user')
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const models = require("../const/models");
-const validateToken = require("../middlewares/auth").validateToken;
 const getUserByField = require("../middlewares/user").getUserByField;
+
+const passport = require('passport')
+require('../config/passport-setup')
 
 router.post('/',   function (req,res,next) {
 
@@ -81,4 +82,10 @@ router.post('/login', async (req, res, next) => {
 // once a non null doc is found we return that
 
 
+router.get('/profile' , passport.authenticate('jwt', {session: false}),
+    (req,res, next)=>{
+        res.send(req.user)
+
+
+    })
 module.exports = router;

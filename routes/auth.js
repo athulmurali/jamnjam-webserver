@@ -1,66 +1,42 @@
-const router = require('express').Router();
+const express = require('express');
+const router  = express.Router();
 
+const jwt      = require('jsonwebtoken');
 const passport = require('passport');
-const User = require('../models/User')
+const EXPIRY_TIME = require("../const/jwt").EXPIRY_TIME;
 
 
-// auth login
-router.get('/login',  (req, res)=> {
-      // res.send('login', { user: req.user });
-    res.send('logging in');
+/* POST login. */
+router.post('/login', function (req, res, next) {
 
-});
-
-// auth logout
-router.get('/logout', (req, res) => {
-    // handle with passport
-    res.send('logging out');
-});
-
-// auth with google+
-router.get('/google',
-    passport.authenticate("google", {scope:['profile']})
-);
-
-
-// callback route for google to redirect to
-// hand control to passport to use code to grab profile info
-router.get('/google/redirect',
-    passport.authenticate("google"),
-    (req, res) => {
-    res.send('you reached the redirect URI');
-});
-
-
-
-router.post('/signup', (req, res) => {
-    const { username, password } = req.body
-    // ADD VALIDATION
-    User.findOne({ 'local.username': username }, (err, userMatch) => {
-        if (userMatch) {
-            return res.json({
-                error: `Sorry, already a user with the username: ${username}`
-            })
+    console.log("auth login reached")
+    passport.authenticate('local', {session: false}, (err, user, info) => {
+        console.log(err);
+        if (err || !user) {
+            return res.status(400).json({
+                message: info ? info.message : 'Login failed',
+                user   : user
+            });
         }
-        const newUser = new User({
-            'local.username': username,
-            'local.password': password
-        })
-        newUser.save((err, savedUser) => {
-            if (err) return res.json(err)
-            return res.json(savedUser)
-        })
-    })
-})
+
+        req.login(user, {session: false}, (err) => {
+            if (err) {
+                res.send(err);
+            }
 
 
+            var token = jwt.sign({
+                user :  user.toObject()
 
+            }, process.env.JWT_KEY, {
+                expiresIn: EXPIRY_TIME
+            });
 
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login')
-}
+            return res.send({user, token});
+        })})
+    (req, res);
 
-
+});
 
 module.exports = router;
+

@@ -1,57 +1,66 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy
-const User = require('../models/User')
+const roles = require("../const/role");
 
+const passport    = require('passport');
+const passportJWT = require("passport-jwt");
+const userUtils = require("../middlewares/user");
+const PASSWORD_FIELD = require("../const/jwt").PASSWORD_FIELD;
+const USERNAME_FIELD = require("../const/jwt").USERNAME_FIELD;
+const getUserByField = require("../middlewares/user").getUserByField;
+const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
-passport.serializeUser((user,done)=>{
-    done(null,user.id)
-})
+const ExtractJWT = passportJWT.ExtractJwt;
 
-
-passport.deserializeUser((id,done)=>{
-    User.findById(id).then((user)=>{
-
-        done(null, user)
-
-    })
-
-})
+const LocalStrategy = require('passport-local').Strategy;
+const JWTStrategy   = passportJWT.Strategy;
 
 passport.use(
-    new GoogleStrategy({
-        // options for google strategy
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_SECRET_KEY,
-        callbackURL: '/auth/google/redirect'
-    }, (accessToken, refreshToken, profile, done) => {
-        // passport callback function
-        console.log('passport callback function fired:');
-        console.log(profile);
-        // check if user exists ?
+    new LocalStrategy({
+        usernameField: USERNAME_FIELD,
+        passwordField: PASSWORD_FIELD,
+    },
+    function (username, password, cb) {
 
-        User.findOne({googleId: profile.id}).then((currentUser)=>{
-            if(currentUser)
-            {
-                console.log("user already exists ! ");
-                done(null,currentUser)
-            }
+        //Assume there is a DB module pproviding a global UserModel
+        return getUserByField('username',username)
+            .then(user => {
 
-            else{
+                if (!user) return cb(null, false, {message: 'Incorrect email or password.'});
 
-                new User({
-                    username : profile.displayName,
-                    googleId: profile.id
-                }).save().
-                then((newUser)=>{
-                    console.log("newUser created " )
-                    console.log(newUser)
-                    done(null,newUser)
-
+                user.comparePassword(password,(err,isMatch)=>{
+                    if (err) {
+                        return cb(null, false, {message: err.toString()});
+                    }
+                    if (!isMatch) {
+                        return cb(null, false, {message: 'Incorrect username or password.'});
+                    }
                 })
 
-            }
+                return cb(null, user, {
+                    message: 'Logged In Successfully'
+                });
+            })
+            .catch(err => {
+                return cb(err);
+            });
+    }
+));
 
-        })
+passport.use(
+    new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey   : process.env.JWT_KEY,
+    },
+    function (jwtPayload, cb) {
+        console.log( jwtPayload.user)
+        //find the user in db if needed
+        const userSchema = userUtils.switchSchemaByRole(jwtPayload.user.role)
 
-    })
-);
+        return userSchema.findById(jwtPayload.user._id)
+            .then(user => {
+                return cb(null, user);
+            })
+            .catch(err => {
+                return cb(err);
+            });
+    }
+));

@@ -11,7 +11,6 @@ module.exports ={
     {
         case roles.ADMIN : return adminSchema
 
-
         case roles.ARTIST :return artistSchema
 
         case roles.BAND :return bandSchema

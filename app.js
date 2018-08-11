@@ -1,10 +1,10 @@
 const  cors = require('cors');
 
 const mongoose = require('mongoose')
-
-
+const passport = require('passport')
 var express = require('express');
 
+require('./config/passport-setup')
 var app = express();
 app.use(cors())
 
@@ -12,9 +12,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-
-// const passportSetup = require('./config/passport-setup')
-const passport = require('passport')
 
 
 var path = require('path');
@@ -58,6 +55,9 @@ app.use(logger('dev'));
 var authRouter          =     require('./routes/auth');
 var indexRouter   =     require('./routes/index');
 var userRouter   =      require('./routes/user');
+
+var bandRouter   =      require('./routes/band');
+
 var userRoleRouter   =   require('./routes/user/');
 
 var usersRouter   =   require('./routes/users');
@@ -70,6 +70,9 @@ app.use('/user', userRouter);
 app.use('/users/', usersRouter);
 
 app.use('/user/:userRole', userRoleRouter);
+
+app.use('/band/', bandRouter);
+
 
 
 app.use('/auth', authRouter);
