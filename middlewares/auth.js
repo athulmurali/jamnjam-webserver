@@ -34,9 +34,12 @@ module.exports={
                     // next(err);
                     return res.status(401).send({error : err.toString()})
                 })
+
+                findUser
             }
 
         });
     }
+
 
 }
