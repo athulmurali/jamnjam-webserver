@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require('../models/User')
+const getUserByField = require("./user").getUserByField;
 const REQ_TOKEN_NAME = require("../const/jwt").REQ_TOKEN_NAME;
 
 module.exports={
@@ -14,8 +15,7 @@ module.exports={
             }
             else{
                 req.decoded = decoded
-
-                User.findOne({_id:decoded.id}).
+               getUserByField({_id:decoded.id}).
                 then((user)=>{
                     if(user)
                     {
@@ -34,10 +34,7 @@ module.exports={
                     // next(err);
                     return res.status(401).send({error : err.toString()})
                 })
-
-                findUser
             }
-
         });
     }
 
