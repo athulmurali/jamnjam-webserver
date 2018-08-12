@@ -8,8 +8,8 @@ const bandModel = switchSchemaByRole(roles.BAND);
 const artistModel = switchSchemaByRole(roles.ARTIST);
 
 
-// called by Artist
-router.post('/memberRequest', async function (req, res, next) {
+// called by Band
+router.post('/addRequestFromBand', async function (req, res, next) {
 
     try{
         console.log(req.query)
@@ -17,12 +17,12 @@ router.post('/memberRequest', async function (req, res, next) {
         const artistId = req.query.artistId
         const bandId = req.query.bandId
 
-        const band          = await  bandModel.findById(bandId).exec()
-        const artistToAdd   = await  artistModel.findById(artistId).exec()
+        const bandToAdd         = await  bandModel.findById(bandId).exec()
+        const artist   = await  artistModel.findById(artistId).exec()
 
-        // const result = await  artistToAdd.approveBand();
 
-        const result = await  band.addRequestFromArtist(artistToAdd._id)
+        const result = await artist.addRequest(bandToAdd._id)
+
         return res.send(result)
     }
 
@@ -31,19 +31,21 @@ router.post('/memberRequest', async function (req, res, next) {
     }
 });
 
-router.post('/acceptMemberRequest', async function (req, res, next) {
+router.post('/acceptBand', async function (req, res, next) {
 
     try{
+
         console.log(req.query)
+
 
         const artistId = req.query.artistId
         const bandId = req.query.bandId
 
-        const band          = await  bandModel.findById(bandId).exec()
-        const artistToAdd   = await  artistModel.findById(artistId).exec()
+        const bandToAdd         = await  bandModel.findById(bandId).exec()
+        const artist   = await  artistModel.findById(artistId).exec()
         // const result = await  artistToAdd.approveBand();
 
-        const result = await  band.acceptMemberRequest(artistToAdd._id)
+        const result = await  artist.acceptMemberRequest(bandToAdd._id)
         return res.send(result)
     }
 
@@ -53,7 +55,7 @@ router.post('/acceptMemberRequest', async function (req, res, next) {
 });
 
 
-router.delete('/memberRequest', async function (req, res, next) {
+router.delete('/bandRequest', async function (req, res, next) {
 
     try{
         console.log(req.query)
@@ -61,11 +63,11 @@ router.delete('/memberRequest', async function (req, res, next) {
         const artistId = req.query.artistId
         const bandId = req.query.bandId
 
-        const band          = await  bandModel.findById(bandId).exec()
-        const artistToRemove   = await  artistModel.findById(artistId).exec()
+        const artist          = await  bandModel.findById(bandId).exec()
+        const bandToRemove  = await  artistModel.findById(artistId).exec()
         // const result = await  artistToAdd.approveBand();
 
-        const result = await  band.rejectMemberRequest(artistToRemove._id)
+        const result = await  artist.rejectRequestFromBand(bandToRemove._id)
         return res.send(result)
     }
     catch(error) {
@@ -74,8 +76,8 @@ router.delete('/memberRequest', async function (req, res, next) {
 });
 
 
-//kickOut member
-router.delete('/member', async function (req, res, next) {
+//LEave  band
+router.delete('/band', async function (req, res, next) {
 
     try{
         console.log(req.query)
@@ -83,12 +85,12 @@ router.delete('/member', async function (req, res, next) {
         const artistId = req.query.artistId
         const bandId = req.query.bandId
 
-        const band          = await  bandModel.findById(bandId).exec()
-        const artistToRemove   = await  artistModel.findById(artistId).exec()
+        const bandToLeave          = await  bandModel.findById(bandId).exec()
+        const artist   = await  artistModel.findById(artistId).exec()
 
         // const result = await  artistToAdd.approveBand();
 
-        const result = await  band.removeMember(artistToRemove._id)
+        const result = await  artist.leaveBand(bandToLeave._id)
         return res.send(result)
     }
     catch(error) {

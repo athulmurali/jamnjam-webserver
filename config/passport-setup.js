@@ -24,20 +24,23 @@ passport.use(
         return getUserByField('username',username)
             .then(user => {
 
-                if (!user) return cb(null, false, {message: 'Incorrect email or password.'});
+                if (!user) return cb(null, false, {message: 'Incorrect usrname or password.'});
 
                 user.comparePassword(password,(err,isMatch)=>{
                     if (err) {
+                        console.log(err)
                         return cb(null, false, {message: err.toString()});
                     }
                     if (!isMatch) {
                         return cb(null, false, {message: 'Incorrect username or password.'});
                     }
+
+                    return cb(null, user, {
+                        message: 'Logged In Successfully'
+                    });
                 })
 
-                return cb(null, user, {
-                    message: 'Logged In Successfully'
-                });
+
             })
             .catch(err => {
                 return cb(err);

@@ -8,6 +8,9 @@ const getUserByField = require("../middlewares/user").getUserByField;
 
 const passport = require('passport')
 require('../config/passport-setup')
+const BAND = require("../const/role").BAND;
+const ARTIST = require("../const/role").ARTIST;
+const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
 router.post('/',   function (req,res,next) {
 
@@ -84,8 +87,49 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/profile' , passport.authenticate('jwt', {session: false}),
     (req,res, next)=>{
-        res.send(req.user)
+        res.send(req.user );
+    })
 
+
+
+router.get('/profile' , passport.authenticate('jwt', {session: false}),
+    async (req, res, next) => {
+
+    try{
+
+        const userModel = switchSchemaByRole(req.user.role);
+        let result = null;
+        if (user.role === ARTIST)
+        {
+
+            result = await userModel.findById(req.user._id)
+                .populate('memberOf')
+                .populate('memberOfRequests').exec()
+
+            res.send(result)
+        }
+
+
+        else if (user.role === BAND)
+        {
+            result = await userModel.findById(req.user._id).
+            populate('members').populate('memberRequest')
+            res.send(result)
+        }
+
+        else{
+            res.send(req.user);
+
+        }
+    }
+
+
+    catch(err){
+        res.status(403).send(err)
+    }
 
     })
+
+
+
 module.exports = router;

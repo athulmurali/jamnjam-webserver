@@ -57,6 +57,29 @@ artistSchema.methods.addRequest= function(bandId){
     } )
 }
 
+
+
+artistSchema.methods.addBandIdToMemberOfList= function(bandId){
+    return new Promise((resolve,reject) =>{
+
+
+        if(this.memberOf.indexOf(bandId) > -1 )
+            reject('Already artist present in band')
+        else if(this.memberOfRequests.indexOf(bandId) > -1 )
+            reject('Already artist present in memberOfRequests')
+
+        else {
+            this.memberOf.push(bandId)
+            this.save().then(
+                savedUser => resolve(savedUser)).
+            catch(err=>  reject(err))
+
+        }
+
+    } )
+}
+
+
 artistSchema.methods.leaveBand= function(bandId){
     return new Promise((resolve,reject) =>{
 

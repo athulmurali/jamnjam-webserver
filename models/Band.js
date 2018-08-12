@@ -35,11 +35,26 @@ var bandSchema = UserSchema({
         });
 
 
-bandSchema.methods.approveBandMemberRequest= function (bandId) {
+bandSchema.methods.approveRequestFromArtist= function (artistId) {
+
+    return new Promise((resolve,reject) =>{
 
 
+        if(this.members.indexOf(artistId) > -1 )
+            reject('Already artistId already in members list')
+        if(this.memberRequest.indexOf(artistId) === -1 )
+            reject('Artist not present in requests')
 
-    return "jhi"
+        this.members.push(artistId)
+        this.save().then(
+            savedUser => resolve(savedUser)
+        ).catch(
+            err=>  reject(err)
+        )
+
+    } )
+
+
 
 
 }
