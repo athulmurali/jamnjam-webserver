@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router({mergeParams: true});
-
 const userUtils = require('../middlewares/user')
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -85,11 +84,6 @@ router.post('/login', async (req, res, next) => {
 // once a non null doc is found we return that
 
 
-router.get('/profile' , passport.authenticate('jwt', {session: false}),
-    (req,res, next)=>{
-        res.send(req.user );
-    })
-
 
 
 router.get('/profile' , passport.authenticate('jwt', {session: false}),
@@ -99,12 +93,12 @@ router.get('/profile' , passport.authenticate('jwt', {session: false}),
 
         const userModel = switchSchemaByRole(req.user.role);
         let result = null;
+        const user = req.user;
         if (user.role === ARTIST)
         {
 
             result = await userModel.findById(req.user._id)
-                .populate('memberOf')
-                .populate('memberOfRequests').exec()
+                .populate('memberOf').exec()
 
             res.send(result)
         }
@@ -112,8 +106,10 @@ router.get('/profile' , passport.authenticate('jwt', {session: false}),
 
         else if (user.role === BAND)
         {
-            result = await userModel.findById(req.user._id).
-            populate('members').populate('memberRequest')
+
+            result = await userModel.findById(user._id)
+                .populate('members').exec()
+
             res.send(result)
         }
 
