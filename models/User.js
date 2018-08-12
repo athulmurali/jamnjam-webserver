@@ -26,7 +26,7 @@ function UserSchema(add){
                 type: String,
                 required: [true, 'password is required']
             },
-        address: String,
+        zip: Number,
         role: {
             type: String,
             enum : [roles.ADMIN, roles.ARTIST, roles.BAND],

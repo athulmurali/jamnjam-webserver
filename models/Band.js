@@ -10,7 +10,8 @@ var bandSchema = UserSchema({
 
     title : {
 
-        type: String
+        type: String,
+        required : true
     },
     members: [
         {

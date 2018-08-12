@@ -9,9 +9,11 @@ const artistSchema = UserSchema({
 
     firstName : {
         type : String,
+        required : true
     },
     lastName : {
         type : String,
+        required : true
     },
     memberOf: {
             type: [{
