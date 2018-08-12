@@ -32,6 +32,14 @@ function UserSchema(add){
             enum : [roles.ADMIN, roles.ARTIST, roles.BAND],
             default: roles.ARTIST
         },
+        bio: {
+            type : String,
+            default: ''
+        },
+        img : {
+            type : String,
+            default : ''
+        }
     })
 
     if(add) {

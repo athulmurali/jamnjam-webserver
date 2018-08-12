@@ -195,6 +195,29 @@ bandSchema.methods.rejectMemberRequest= function(artistId){
 
 
 
+bandSchema.methods.addArtistIdToBand= function(artistId){
+
+
+    return new Promise((resolve,reject) =>{
+
+
+        if(this.members.indexOf(artistId) > -1 )
+            reject('Already artistId already in members list')
+        else if(this.memberRequest.indexOf(artistId) > -1 )
+            reject('Already artistId already in members to approve list! Approve or cancel it first')
+
+        else {
+            this.members.push(artistId)
+            this.save().then(
+                savedUser => resolve(savedUser)).
+            catch(err=>  reject(err))
+        }
+
+    } )
+
+
+
+}
 
 
 module.exports = mongoose.model(models.bandModel,bandSchema)
