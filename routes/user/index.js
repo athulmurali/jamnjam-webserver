@@ -1,5 +1,7 @@
 var express = require('express');
 const userUtils = require("../../middlewares/user");
+const BAND = require("../../const/role").BAND;
+const ARTIST = require("../../const/role").ARTIST;
 var router = express.Router({mergeParams: true});
 
 const switchSchemaByRole = require("../../middlewares/user").switchSchemaByRole;
@@ -70,6 +72,49 @@ router.get('/isEmailAvailable/:email',function (req,res) {
     })
 
 })
+
+
+
+router.get('/profile/:_id' ,
+    async (req, res, next) => {
+
+
+        try{
+
+            const userRole = req.params.userRole
+
+            console.log(req.params._id)
+            const userModel = switchSchemaByRole(req.params.userRole);
+            let result = null;
+            if (userRole === ARTIST)
+            {
+
+                result = await userModel.findById(req.params._id)
+                    .populate('memberOf').exec()
+                res.send(result)
+            }
+
+
+            else if (userRole === BAND)
+            {
+
+                result = await userModel.findById(req.params._id)
+                    .populate('members').exec()
+                res.send(result)
+            }
+
+            else{
+                result = await userModel.findById(req.params._id).exec()
+                res.send(result);
+            }
+        }
+
+        catch(err){
+            res.status(403).send(err)
+        }
+
+    })
+
 
 module.exports = router;
 

@@ -89,6 +89,8 @@ router.post('/login', async (req, res, next) => {
 router.get('/profile' , passport.authenticate('jwt', {session: false}),
     async (req, res, next) => {
 
+    console.log(req)
+
     try{
 
         const userModel = switchSchemaByRole(req.user.role);
