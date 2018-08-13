@@ -24,12 +24,14 @@ router.post('/band', async function (req, res, next) {
 
         if(!band)
         {
-            return res.status(403).send({error : "invalid bandId"})
+            return res.status(403).send({error : "invalid bandId",
+            givenPayload: req.body})
         }
 
         if(!artist)
         {
-            return res.status(403).send({error : "invalid artistId"})
+            return res.status(403).send({error : "invalid artistId",
+                givenPayload: req.body})
         }
 
         const bandResult = await  band.addArtistIdToBand(artistId);
@@ -58,14 +60,17 @@ router.delete('/band', async function (req, res, next) {
         const artist               = await  artistModel.findById(artistId).exec()
 
 
-        if(!bandToLeave)
-        {
-            return res.status(403).send({error : "invalid bandId"})
+        if(!bandToLeave) {
+            return res.status(403).send({
+                error: "invalid bandId",
+                givenPayload: req.body
+            })
         }
 
         if(!artist)
         {
-            return res.status(403).send({error : "invalid artistId"})
+            return res.status(403).send({error : "invalid artistId",
+                givenPayload: req.body})
         }
 
         // const result = await  artistToAdd.approveBand();
