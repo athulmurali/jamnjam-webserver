@@ -1,7 +1,10 @@
+
 var mongoose     = require('mongoose');
+const roles = require("../const/role");
 var UserSchema  = require('./User')
 
 const models     = require('../const/models')
+const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
 
 
@@ -145,7 +148,30 @@ artistSchema.methods.rejectRequestFromBand= function(bandId){
 }
 
 
+artistSchema.pre('remove',function(next){
+    console.log("Pre remove - artist ")
+    const artist = this;
+    this.memberOf.map((bandId)=>{
 
+    switchSchemaByRole(roles.BAND).findById(bandId).then((bandUser)=>{
+            if(bandUser)
+            {
+                console.log("bandUser found! ")
+                bandUser.removeMember((artist._id) , (result)=>{
+                    if(result)
+                    {
+                        console.log("removed artist id from band members: " + artist._id)
+                        console.log(result)
+                    }
+                })
+            }
+            return null;
+        })
+
+    })
+
+    next();
+})
 
 
 

@@ -2,6 +2,8 @@ var mongoose     = require('mongoose');
 var UserSchema  = require('./User')
 
 const models     = require('../const/models')
+const roles = require("../const/role");
+const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
 
 
@@ -218,6 +220,35 @@ bandSchema.methods.addArtistIdToBand= function(artistId){
 
 
 }
+
+
+
+bandSchema.pre('remove',function(next){
+    console.log("Pre remove - artist ")
+    const band = this;
+    this.memberOf.map((artistId)=>{
+
+        switchSchemaByRole(roles.ARTIST).findById(artistId).then((artistUser)=>{
+            if(artistUser)
+            {
+                console.log("artistUser found! ")
+                artistUser.leaveBand((band._id) , (result)=>{
+                    if(result)
+                    {
+                        console.log("removed artist id from band members: " + band._id)
+                        console.log(result)
+                    }
+                })
+            }
+            return null;
+        })
+
+    })
+
+    next();
+})
+
+
 
 
 module.exports = mongoose.model(models.bandModel,bandSchema)

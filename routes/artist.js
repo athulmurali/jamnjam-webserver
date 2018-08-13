@@ -9,7 +9,6 @@ const artistModel = switchSchemaByRole(roles.ARTIST);
 
 
 
-//LEave  band
 router.post('/band', async function (req, res, next) {
 
     try{
@@ -25,6 +24,7 @@ router.post('/band', async function (req, res, next) {
 
         const bandResult = await  band.addArtistIdToBand(artistId);
         const artistResult = await artist.addBandIdToMemberOfList(bandId);
+
 
         return res.send(artistResult)
     }
