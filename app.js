@@ -62,6 +62,8 @@ var userRoleRouter   =   require('./routes/user/');
 
 var usersRouter   =   require('./routes/users');
 
+var updateUserRouter   =   require('./routes/update');
+
 const artistLookOutRouter = require('./routes/artistLookOut')
 
 
@@ -77,6 +79,7 @@ app.use('/band/', bandRouter);
 
 app.use('/auth', authRouter);
 app.use('/artistLookOut', artistLookOutRouter);
+app.use('/update', updateUserRouter);
 
 
 
