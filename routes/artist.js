@@ -12,21 +12,31 @@ const artistModel = switchSchemaByRole(roles.ARTIST);
 router.post('/band', async function (req, res, next) {
 
     try{
-        console.log(req.query)
+        console.log(req.body)
 
-        const artistId = req.query.artistId
-        const bandId = req.query.bandId
+        const artistId = req.body.artistId
+        const bandId = req.body.bandId
 
         const band          = await  bandModel.findById(bandId).exec()
         const artist        = await  artistModel.findById(artistId).exec()
 
         // const result = await  artistToAdd.approveBand();
 
+        if(!band)
+        {
+            return res.status(403).send({error : "invalid bandId"})
+        }
+
+        if(!artist)
+        {
+            return res.status(403).send({error : "invalid artistId"})
+        }
+
         const bandResult = await  band.addArtistIdToBand(artistId);
         const artistResult = await artist.addBandIdToMemberOfList(bandId);
 
 
-        return res.send(artistResult)
+        return res.send(bandResult)
     }
     catch(error) {
         res.status(403).send({error : error.toString()})
@@ -41,17 +51,28 @@ router.delete('/band', async function (req, res, next) {
     try{
         console.log(req.query)
 
-        const artistId = req.query.artistId
-        const bandId = req.query.bandId
+        const artistId = req.body.artistId
+        const bandId = req.body.bandId
 
         const bandToLeave          = await  bandModel.findById(bandId).exec()
         const artist               = await  artistModel.findById(artistId).exec()
+
+
+        if(!bandToLeave)
+        {
+            return res.status(403).send({error : "invalid bandId"})
+        }
+
+        if(!artist)
+        {
+            return res.status(403).send({error : "invalid artistId"})
+        }
 
         // const result = await  artistToAdd.approveBand();
 
         const result = await  artist.leaveBand(bandToLeave._id)
         const bandResult = await  bandToLeave.removeMember(artistId)
-        return res.send(result)
+        return res.send(bandResult)
     }
     catch(error) {
         res.status(403).send({error : error.toString()})

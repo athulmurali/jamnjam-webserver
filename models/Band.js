@@ -232,7 +232,7 @@ bandSchema.pre('remove',function(next){
             if(artistUser)
             {
                 console.log("artistUser found! ")
-                artistUser.leaveBand((band._id) , (result)=>{
+                artistUser.leaveBand((band._id)).then((result)=>{
                     if(result)
                     {
                         console.log("removed artist id from band members: " + band._id)

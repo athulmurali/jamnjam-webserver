@@ -157,13 +157,16 @@ artistSchema.pre('remove',function(next){
             if(bandUser)
             {
                 console.log("bandUser found! ")
-                bandUser.removeMember((artist._id) , (result)=>{
-                    if(result)
-                    {
-                        console.log("removed artist id from band members: " + artist._id)
-                        console.log(result)
+                bandUser.removeMember(artist._id).then(
+                    result=>{
+                        if(result)
+                        {
+                            console.log("removed artist id from band members: " + artist._id)
+                            console.log(result)
+                        }
                     }
-                })
+                )
+
             }
             return null;
         })
