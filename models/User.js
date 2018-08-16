@@ -21,6 +21,11 @@ function UserSchema(add){
             unique : true
         },
         googleId : String,
+        google :{
+            id : String,
+            token : String
+
+        },
         password   :
             {
                 type: String,

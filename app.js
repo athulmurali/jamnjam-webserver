@@ -85,7 +85,9 @@ app.use('/artistLookOut', artistLookOutRouter);
 app.use('/update', updateUserRouter);
 app.use('/artist/',artistRouter)
 
-
+const  appointmentRoutes = require('./routes/routes');
+app.use('/appointmentsApp',    passport.authenticate('jwt', {session: false}),
+    appointmentRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

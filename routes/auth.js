@@ -43,8 +43,13 @@ router.post('/login', function (req, res, next) {
 router.post('/googleLogin', function (req, res, next) {
 
     console.log("google auth  login reached")
-    passport.authenticate('local', {session: false}, (err, user, info) => {
-        console.log(err);
+    passport.authenticate('google',
+        { scope:
+                [ 'profile' ]},
+
+        {session:   false}, (err, user, info) => {
+
+
         if (err || !user) {
             return res.status(400).json({
                 message: info ? info.message : 'Login failed',
