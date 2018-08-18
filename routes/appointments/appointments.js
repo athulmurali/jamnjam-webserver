@@ -13,8 +13,7 @@ function mapAppointment(dbAppointment) {
         endDateAndTime: dbAppointment.endDateAndTime,
         duration: dbAppointment.duration,
         remarks: dbAppointment.remarks,
-        with : dbAppointment.with,
-        status: dbAppoint
+        with : dbAppointment.with
     };
     return halAppointment;
 }
