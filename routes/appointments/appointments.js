@@ -1,4 +1,5 @@
 var Appointment = require('../../models/appointment');
+const ARTIST = require("../../const/role").ARTIST;
 
 function mapAppointment(dbAppointment) {
     var halAppointment = {
@@ -11,7 +12,9 @@ function mapAppointment(dbAppointment) {
         dateAndTime: dbAppointment.dateAndTime,
         endDateAndTime: dbAppointment.endDateAndTime,
         duration: dbAppointment.duration,
-        remarks: dbAppointment.remarks
+        remarks: dbAppointment.remarks,
+        with : dbAppointment.with,
+        status: dbAppoint
     };
     return halAppointment;
 }
@@ -37,7 +40,7 @@ exports.create = function (req, res) {
 
 exports.getById = function (req, res) {
     var appointmentId = req.params.id;
-    Appointment.findById(appointmentId, function(err, dbAppointment) {
+    Appointment.find({id: appointmentId}, function(err, dbAppointment) {
         if (err) {
             throw err;
         }
@@ -45,12 +48,16 @@ exports.getById = function (req, res) {
             res.status(404).send({ message: 'Appointment can not be found' });
         }
         else {
-            res.status(200).send(mapAppointment(dbAppointment));
+            res.status(200).send(dbAppointment);
         }
     });
 };
 
 exports.getByUser = function (req, res) {
+
+
+    console.log("User request after authentication")
+    console.log(req.user)
     var result = {
         _links: {
             self: { href: '/appointments' }
@@ -60,9 +67,15 @@ exports.getByUser = function (req, res) {
         },
         count: 0
     };
-    var userId = req.user.id;
+
+    var     fieldToSearch   = 'user.id';
+    var     userId          = req.user.id;
+
+    if(req.user.role ===  ARTIST)
+        fieldToSearch= 'with'
+
     Appointment
-        .find({ 'user.id': userId })
+        .find({ [fieldToSearch]: userId })
         .sort('-dateAndTime')
         .exec(function (err, appointments) {
             if (err) {

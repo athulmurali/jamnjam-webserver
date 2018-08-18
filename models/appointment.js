@@ -9,7 +9,11 @@ var AppointmentSchema = new Schema({
     },
     dateAndTime: { type: Date, required: true },
     endDateAndTime: { type: Date, required: true },
-    remarks: String
+    remarks: String,
+    with: {
+        type: mongoose.Schema.Types.ObjectId
+    },
+
 });
 
 AppointmentSchema.virtual('duration')
@@ -60,6 +64,8 @@ AppointmentSchema.path('dateAndTime').validate(function (value) {
     return isValid;
 },
     "The appointment can not be scheduled in the past");
+
+
 
 
 module.exports = mongoose.model('Appointment', AppointmentSchema);
