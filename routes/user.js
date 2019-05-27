@@ -11,6 +11,8 @@ const BAND = require("../const/role").BAND;
 const ARTIST = require("../const/role").ARTIST;
 const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
+const nodeMailerConfig = require('../config/nodeMailer')
+
 router.post('/',   function (req,res,next) {
 
     const user = req.body;
@@ -23,12 +25,18 @@ router.post('/',   function (req,res,next) {
         console.log(newUser)
         // res.send(newUser);
 
+        const message = "Hello," +
+            "You have been successfully registered as " + newUser.role
+        nodeMailerConfig.sendNewMail(newUser.emailId,
+            "Jam n' Jam : Registration", message
+        );
+
+
         var token = jwt.sign({ id: newUser._id }, process.env.JWT_KEY, {
             expiresIn: 24*60*60*1000 // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token });
         // res.send(user)
-
 
     }).catch((err)=>{
         console.log("Error :...")
@@ -58,6 +66,7 @@ router.delete('/:_id', function (req,res) {
 // Finds the user in the mongo database and logs them in
 router.post('/login', async (req, res, next) => {
     try{
+
         console.log("Current path:  " + req.originalUrl)
         console.log(req.body)
         const username = req.body.username;

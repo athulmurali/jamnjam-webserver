@@ -25,7 +25,6 @@ module.exports ={
     console.log(roleKeys)
     return roleKeys.map(role => {return module.exports.switchSchemaByRole(roles[role])})
 },
-
     getUserByField : async(fieldName, value) =>{
         try{
             const  userArray = await Promise.all(
