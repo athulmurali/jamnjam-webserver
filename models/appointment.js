@@ -45,8 +45,8 @@ AppointmentSchema.path('dateAndTime').validate(
                     ]
                 });
             console.log(docs)
-            const isValid = (!docs || docs.length === 0)
-            return isValid
+
+            return (!docs || docs.length === 0);
 
         }
         catch (err){
@@ -57,7 +57,7 @@ AppointmentSchema.path('dateAndTime').validate(
     }, "The appointment overlaps with other appointments");
 
 AppointmentSchema.path('dateAndTime').validate(function (value) {
-    const isValid = true;
+    let isValid = true;
     if (value < new Date()) {
         isValid = false;
     }
