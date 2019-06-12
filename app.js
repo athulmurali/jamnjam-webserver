@@ -13,9 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 const logger = require('morgan');
-
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true})
-    .then(result => console.log("Mongo connected!"))
+.then(result => console.log("Mongo connected!"))
     .catch(error => console.error("Error in mongo connection", error));
 
 app.use(logger('dev'));
