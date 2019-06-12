@@ -1,11 +1,11 @@
-var mongoose     = require('mongoose');
-var UserSchema  = require('./User')
+const mongoose     = require('mongoose');
+const UserSchema  = require('./User')
 
 const models     = require('../const/models')
 
 
 
-var adminSchema = UserSchema({
+const adminSchema = UserSchema({
 
     firstName : {
         type : String,
@@ -26,7 +26,7 @@ var adminSchema = UserSchema({
 });
 
 adminSchema.pre('save', function(next) {
-    var user = this;
+    const user = this;
     console.log("Sdgsdgs")
     console.log(user)
     next();

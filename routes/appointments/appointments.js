@@ -1,8 +1,8 @@
-var Appointment = require('../../models/appointment');
+const Appointment = require('../../models/appointment');
 const ARTIST = require("../../const/role").ARTIST;
 
 function mapAppointment(dbAppointment) {
-    var halAppointment = {
+    const halAppointment = {
         _links: {
             self: { href: '/appointments/' + dbAppointment.id },
             user: { href: '/users/' + dbAppointment.user.id, title: dbAppointment.user.displayName }
@@ -19,7 +19,7 @@ function mapAppointment(dbAppointment) {
 }
 
 exports.create = function (req, res) {
-    var newAppointment = new Appointment(req.body);
+    const newAppointment = new Appointment(req.body);
     newAppointment.user.id = req.user.id;
     newAppointment.user.displayName = req.user.displayName;
     newAppointment.save(function (err, savedAppointment) {
@@ -38,7 +38,7 @@ exports.create = function (req, res) {
 };
 
 exports.getById = function (req, res) {
-    var appointmentId = req.params.id;
+    const appointmentId = req.params.id;
     Appointment.find({id: appointmentId}, function(err, dbAppointment) {
         if (err) {
             throw err;
@@ -57,7 +57,7 @@ exports.getByUser = function (req, res) {
 
     console.log("User request after authentication")
     console.log(req.user)
-    var result = {
+    const result = {
         _links: {
             self: { href: '/appointments' }
         },
@@ -67,8 +67,8 @@ exports.getByUser = function (req, res) {
         count: 0
     };
 
-    var     fieldToSearch   = 'user.id';
-    var     userId          = req.user.id;
+    const     fieldToSearch   = 'user.id';
+    const     userId          = req.user.id;
 
     if(req.user.role ===  ARTIST)
         fieldToSearch= 'with'
@@ -81,7 +81,7 @@ exports.getByUser = function (req, res) {
                 throw err;
             }
             result.count = appointments.length;
-            for (var i = 0; i < result.count; i++) {
+            for (const i = 0; i < result.count; i++) {
                 result._embedded.appointment.push(mapAppointment(appointments[i]));
             }
             res.status(200).send(result);
@@ -89,7 +89,7 @@ exports.getByUser = function (req, res) {
 };
 
 exports.update = function (req, res) {
-    var appointmentId = req.params.id;
+    const appointmentId = req.params.id;
     Appointment.findById(appointmentId, function(err, dbAppointment) {
         if (err) {
             throw err;
@@ -117,7 +117,7 @@ exports.update = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-    var appointmentId = req.params.id;
+    const appointmentId = req.params.id;
     Appointment.findById(appointmentId, function(err, dbAppointment) {
         if (err) {
             throw err;

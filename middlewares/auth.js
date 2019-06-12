@@ -5,7 +5,7 @@ const REQ_TOKEN_NAME = require("../const/jwt").REQ_TOKEN_NAME;
 
 module.exports={
     validateToken : (req,res,next)=>{
-        var token = req.headers[REQ_TOKEN_NAME];
+        const token = req.headers[REQ_TOKEN_NAME];
         if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
 
         jwt.verify(token, process.env.JWT_KEY,  function(err, decoded) {

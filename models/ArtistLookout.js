@@ -1,7 +1,7 @@
 const models = require("../const/models")
 
 
-var mongoose     = require('mongoose');
+const mongoose     = require('mongoose');
 
 
 const ArtistLookOutStatus = Object.freeze({
@@ -45,7 +45,7 @@ const  ArtistLookOutSchema = new mongoose.Schema({
     Object.assign(ArtistLookOutSchema.statics, {ArtistLookOutStatus});
 
 ArtistLookOutSchema.methods.toJSON = function() {
-        var obj = this.toObject();
+        const obj = this.toObject();
         // delete obj.password;
         return obj;
     }

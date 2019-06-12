@@ -26,7 +26,7 @@ router.post('/login', function (req, res, next) {
             }
 
 
-            var token = jwt.sign({
+            const token = jwt.sign({
                 user :  user.toObject()
 
             }, process.env.JWT_KEY, {
@@ -58,7 +58,7 @@ router.post('/login', function (req, res, next) {
 //             }
 //
 //
-//             var token = jwt.sign({
+//             const token = jwt.sign({
 //                 user :  user.toObject()
 //
 //             }, process.env.JWT_KEY, {

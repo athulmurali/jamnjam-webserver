@@ -1,11 +1,11 @@
 const models = require( "../const/models")
 const mongoose = require( 'mongoose')
 
-var express = require('express');
+const express = require('express');
 
 const ArtistLookOutSchema = require('../models/ArtistLookout')
 
-var router = express.Router();
+const router = express.Router();
 
 
 
