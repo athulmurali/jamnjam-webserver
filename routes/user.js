@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
+const express = require('express');
+const router = express.Router({mergeParams: true});
 const userUtils = require('../middlewares/user')
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -32,7 +32,7 @@ router.post('/',   function (req,res,next) {
         );
 
 
-        var token = jwt.sign({ id: newUser._id }, process.env.JWT_KEY, {
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_KEY, {
             expiresIn: 24*60*60*1000 // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token });

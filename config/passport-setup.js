@@ -93,7 +93,7 @@ passport.use(
                     console.log("GoogleStrategy")
 
                     // if the user isnt in our database, create a new user
-                    var newUser =  new userSchema()
+                    const newUser =  new userSchema()
 
                     // set all of the relevant information
                     newUser.google.id = profile.id;

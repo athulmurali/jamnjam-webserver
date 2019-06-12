@@ -1,10 +1,10 @@
-var express = require('express');
+const express = require('express');
 
 const  index = require('./appointments/index');
 
-var appointments = require('./appointments/appointments');
+const appointments = require('./appointments/appointments');
 const middleware = require("../middlewares/santizer");
-var router = express.Router();
+const router = express.Router();
 
 
 

@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var AppointmentSchema = new Schema({
+const AppointmentSchema = new Schema({
     title: { type: String, required: 'Appointment description is required' },
     user: {
         id: { type: String, required: true },
@@ -18,7 +18,7 @@ var AppointmentSchema = new Schema({
 
 AppointmentSchema.virtual('duration')
     .get(function () {
-        var durationMs = this.endDateAndTime - this.dateAndTime;
+        const durationMs = this.endDateAndTime - this.dateAndTime;
         if (durationMs) {
             return Math.abs(this.endDateAndTime - this.dateAndTime) / 1000 / 60;
         }
@@ -30,7 +30,7 @@ AppointmentSchema.virtual('duration')
 AppointmentSchema.path('dateAndTime').validate(
     async function (value) {
 
-        var self = this;
+        const self = this;
         console.log("AppointmentSchema")
         console.log(value)
         try
@@ -57,7 +57,7 @@ AppointmentSchema.path('dateAndTime').validate(
     }, "The appointment overlaps with other appointments");
 
 AppointmentSchema.path('dateAndTime').validate(function (value) {
-    var isValid = true;
+    const isValid = true;
     if (value < new Date()) {
         isValid = false;
     }

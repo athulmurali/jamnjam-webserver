@@ -1,7 +1,7 @@
 
-var mongoose     = require('mongoose');
+const mongoose     = require('mongoose');
 const roles = require("../const/role");
-var UserSchema  = require('./User')
+const UserSchema  = require('./User')
 
 const models     = require('../const/models')
 const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;

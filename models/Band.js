@@ -1,5 +1,5 @@
-var mongoose     = require('mongoose');
-var UserSchema  = require('./User')
+const mongoose     = require('mongoose');
+const UserSchema  = require('./User')
 
 const models     = require('../const/models')
 const roles = require("../const/role");
@@ -7,7 +7,7 @@ const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
 
 
-var bandSchema = UserSchema({
+const bandSchema = UserSchema({
 
 
     title : {

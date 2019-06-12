@@ -1,7 +1,7 @@
-var nodeMailer = require('nodemailer');
+const nodeMailer = require('nodemailer');
 
 
-var transporter = nodeMailer.createTransport({
+const transporter = nodeMailer.createTransport({
     service: process.env.EMAIL_SERVICE,
     auth: {
         user: process.env.EMAIL_USERNAME,

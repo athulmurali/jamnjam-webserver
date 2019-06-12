@@ -1,7 +1,7 @@
 const roles = require('../const/role')
 
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
+const mongoose     = require('mongoose');
+const Schema       = mongoose.Schema;
 
 const   bcrypt = require('bcrypt');
 const   SALT_WORK_FACTOR = 10;
@@ -9,7 +9,7 @@ const   SALT_WORK_FACTOR = 10;
 
 
 function UserSchema(add){
-    var schema =   new Schema({
+    const schema =   new Schema({
         username  :{
             type: String,
             required: true,
@@ -74,7 +74,7 @@ function UserSchema(add){
 
 
     schema.pre('save', function(next) {
-        var user = this;
+        const user = this;
 
         console.log("'in pre save hook ....")
         console.log(user)
@@ -107,7 +107,7 @@ function UserSchema(add){
 
 
     schema.pre('update', function(next) {
-        var user = this;
+        const user = this;
 
         console.log("'in pre update hook ........")
         console.log(user)
@@ -148,7 +148,7 @@ function UserSchema(add){
     };
 
     schema.methods.toJSON = function() {
-        var obj = this.toObject();
+        const obj = this.toObject();
         delete obj.password;
         return obj;
     }

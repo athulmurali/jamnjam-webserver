@@ -1,6 +1,6 @@
-var express = require('express');
+const express = require('express');
 const roles = require("../const/role");
-var router = express.Router({mergeParams: true});
+const router = express.Router({mergeParams: true});
 
 const switchSchemaByRole = require("../middlewares/user").switchSchemaByRole;
 
